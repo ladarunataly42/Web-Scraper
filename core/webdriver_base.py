@@ -11,7 +11,7 @@ class WebDriverBase(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def get(self, url):
+    def connect(self):
         pass
 
     @abc.abstractmethod

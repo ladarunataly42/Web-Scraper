@@ -1,15 +1,15 @@
+import os
+import sys
 import time
 from abc import ABC
-import os
 
-import requests
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from exceptions import *
 from core.webdriver_base import WebDriverBase
+from core.constants import LINK_FB
 
 
 class WebDriver(WebDriverBase):
@@ -19,7 +19,8 @@ class WebDriver(WebDriverBase):
 
     def __call__(self, *args, **kwargs):
         self.start()
-        self.get(*args)
+        self.connect(*args)
+        # print(*args)
 
     def start(self):
         chrome_options = webdriver.ChromeOptions()
@@ -28,27 +29,32 @@ class WebDriver(WebDriverBase):
         # chrome_options.add_argument('user-data-dir={}'.format("path/user/"))
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
 
-    def get(self, url):
-        self.driver.get(url)
-        WebDriverWait(self.driver, 2).until(EC.element_to_be_clickable(
-                (By.CSS_SELECTOR, 'button[data-cookiebanner="accept_button"]'))).click()  # accept cookie
+    def connect(self):
+        self.driver.get(LINK_FB)
+        self.get('button[data-cookiebanner="accept_button"]', 2, click=1)  # accept cookie
         self.login()
 
     def login(self):
         try:
-            username = WebDriverWait(self.driver, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "input[name='email']")))
-            password = WebDriverWait(self.driver, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "input[name='pass']")))
+            username = self.get("input[name='email']", 10)
+            password = self.get("input[name='pass']", 10)
 
             username.clear()
-            username.send_keys(os.environ['username'])
+            username.send_keys(os.environ['user'])
             password.clear()
-            password.send_keys(os.environ['password'])
+            password.send_keys(os.environ['pass'])
 
-            button = WebDriverWait(self.driver, 2).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']"))).click()
+            self.get("button[type='submit']", 2, click=1)
+            time.sleep(5)
             print("login successful")
         except Exception as e:
             raise e
+
+    def get(self, html_str, sec, click=0):
+        if click == 1:
+            return WebDriverWait(self.driver, sec).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, html_str))).click()
+        elif click == 0:
+            return WebDriverWait(self.driver, sec).until(EC.element_to_be_clickable((By.CSS_SELECTOR, html_str)))
+
 
