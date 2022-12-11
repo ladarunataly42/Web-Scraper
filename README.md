@@ -1,6 +1,3 @@
-# Web-Scraper
-
-
 # Facebook Scraper
 ## Project Master
 
