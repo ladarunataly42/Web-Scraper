@@ -1,9 +1,11 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from core.beautiful_soup import BeautifulSoupScrape
 from core.models.people import People
 from core.models.user import Users
 from core.mongo_repo import MongoRepository
-from web_driver import WebDriver
+from core.web_driver import WebDriver
+
 
 class UserService:
     def __init__(self):
@@ -35,7 +37,28 @@ class UserService:
 class PersonScraped:
     def __init__(self):
         self.repo = MongoRepository(collection=People)
+        self.page_sources = {}
 
-    def take_data(self, link):
+    def take_data(self, link_fb):
         scraper = WebDriver()
-        scraper()
+        scraper.start()
+        link_fb = link_fb[:-1] if link_fb[-1] == "/" else link_fb
+
+        links = ['/about_places', '/about_work_and_education', '/about_contact_and_basic_info',
+                 '/about_family_and_relationships', '/about_details', '/about_life_events']
+
+        for link in links:
+            source = scraper.redirect_link(link_fb + link)
+            self.page_sources[link[1:]] = source
+
+        beautiful_soup = BeautifulSoupScrape(self.page_sources, link_fb)
+        person_detail = beautiful_soup.about()
+        self.repo.insert_people(person_detail)
+
+    def search_data(self, name):
+        try:
+            return self.repo.find_people(name)
+        except:
+            return False
+
+

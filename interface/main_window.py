@@ -1,8 +1,9 @@
+import json
 import sys
 from os.path import dirname, abspath
 
 from PyQt5.QtWidgets import QApplication, QWidget, QDialog, QDesktopWidget
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtWidgets
 
 from appUI import Ui_DialogAPP
 from loginUI import Ui_Dialog
@@ -112,13 +113,61 @@ class Application(QDialog, Ui_DialogAPP):
             self.label_2.setText("Please insert a link")
             self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         else:
-            PersonScraped().take_data(link=self.lineEdit.text())
+            PersonScraped().take_data(self.lineEdit.text())
             self.label_2.setText("Scraped")
             self.label_2.setAlignment(QtCore.Qt.AlignCenter)
 
-
     def search_db(self):
-        pass
+        if len(self.lineEdit_2.text()) == 0:
+            self.error.setText("Please insert a name")
+            self.error.setAlignment(QtCore.Qt.AlignCenter)
+        else:
+            self.error.setText("")
+            try:
+                person = PersonScraped().search_data(name=self.lineEdit_2.text())
+                self.label_url.setText(person['url_fb'])
+                self.label_friends.setText(person['friends'])
+                for k, v in person.items():
+                    if k == 'about_contact_and_basic_info':
+                        self.contact.setText(v['Contact info'])
+                        self.social.setText(v['Websites and social links'])
+                        self.gender.setText(list(v.keys())[2])
+                    elif k == 'about_places':
+                        if "Places lived" in list(v.keys()):
+                            self.city.setText("No info to show")
+                            self.hometown.setText("No info to show")
+                        else:
+                            self.city.setText(v['Current city'])
+                            self.hometown.setText(v['Hometown'])
+                    elif k == 'about_work_and_education':
+                        self.work.setText(v['Work'])
+                        self.college.setText(v['College'])
+                        self.highschool.setText(v['High School'])
+                    elif k == 'about_family_and_relationships':
+                        self.relationship.setText(v['Relationship'])
+                        family = ''
+                        for i, j in v.items():
+                            if i == 'Family members':
+                                family = '\n'.join(key + " - " + value for key, value in j.items())
+                                if len(family) == 0:
+                                    family = "No family members to show"
+                        self.family.setText(family)
+                    elif k == 'about_details':
+                        self.about.setText(v['About'])
+                        self.pronunciation.setText(v['Name pronunciation'])
+                        self.nicknames.setText(v['Other names'])
+                        self.quote.setText(v['Favorite quotes'])
+                    elif k == 'about_life_events':
+                        events = ''
+                        if 'No life events to show' in list(v.keys()):
+                            events = "No life events to show"
+                        else:
+                            events = '\n'.join(key + " - " + value for key, value in v.items())
+                        self.textBrowser.setText(events)
+
+            except Exception as e:
+                print(e)
+                self.error.setText("Doesn't exist this person!")
 
 
 if __name__ == '__main__':
@@ -128,3 +177,9 @@ if __name__ == '__main__':
     register_window = RegisterWindow()
     main_window.show()
     app.exec_()
+
+# https://www.facebook.com/Denisse.Ladaru
+# https://www.facebook.com/LadaruNataly
+# https://www.facebook.com/bogdanspike.adrian
+# https://www.facebook.com/natalyladaruflorentina
+# https://www.facebook.com/cristi93

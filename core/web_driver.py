@@ -17,17 +17,13 @@ class WebDriver(WebDriverBase):
     def __init__(self):
         super().__init__()
 
-    def __call__(self, *args, **kwargs):
-        self.start()
-        self.connect(*args)
-        # print(*args)
-
     def start(self):
         chrome_options = webdriver.ChromeOptions()
         prefs = {"profile.default_content_setting_values.notifications": 2}
         chrome_options.add_experimental_option("prefs", prefs)
-        # chrome_options.add_argument('user-data-dir={}'.format("path/user/"))
+        chrome_options.add_argument('headless')
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+        self.connect()
 
     def connect(self):
         self.driver.get(LINK_FB)
@@ -45,7 +41,6 @@ class WebDriver(WebDriverBase):
             password.send_keys(os.environ['pass'])
 
             self.get("button[type='submit']", 2, click=1)
-            time.sleep(5)
             print("login successful")
         except Exception as e:
             raise e
@@ -56,5 +51,12 @@ class WebDriver(WebDriverBase):
                 EC.element_to_be_clickable((By.CSS_SELECTOR, html_str))).click()
         elif click == 0:
             return WebDriverWait(self.driver, sec).until(EC.element_to_be_clickable((By.CSS_SELECTOR, html_str)))
+
+    def redirect_link(self, link):
+        WebDriverWait(self.driver, 5).until(EC.url_changes(link))
+        self.driver.get(link)
+        return self.driver.page_source
+
+
 
 

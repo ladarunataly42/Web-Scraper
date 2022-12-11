@@ -35,3 +35,23 @@ class MongoRepository:
             return self.collection.objects.get(email=email)
         except Exception as e:
             raise e
+
+    def find_people(self, name):
+        try:
+            dict_data = {}
+            data = self.collection.objects.get(name=name).__dict__
+            for item in data.items():
+                if item[0] not in ['_cls', '_dynamic_lock', '_fields_ordered']:
+                    dict_data.update({item[0]: item[1]})
+            return dict_data
+        except Exception as e:
+            raise e
+
+    def insert_people(self, person):
+        try:
+            obj = self.collection()
+            for key in person.keys():
+                setattr(obj, key, person[key])
+            self.collection.objects.insert(obj)
+        except Exception as e:
+            print(e)
