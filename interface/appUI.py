@@ -529,7 +529,7 @@ class Ui_DialogAPP(object):
         self.tabWidget.addTab(self.tab_search, "")
 
         self.retranslateUi(Dialog)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.toolBox.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
