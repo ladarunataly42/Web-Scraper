@@ -155,7 +155,10 @@ class Application(QDialog, Ui_DialogAPP):
                     elif k == 'about_details':
                         self.about.setText(v['About'])
                         self.pronunciation.setText(v['Name pronunciation'])
-                        self.nicknames.setText(v['Other names'])
+                        if 'Other names' in list(v.keys()):
+                            self.nicknames.setText(v['Other names'])
+                        else:
+                            self.nicknames.setText(list(v.keys())[2])
                         self.quote.setText(v['Favorite quotes'])
                     elif k == 'about_life_events':
                         events = ''
@@ -177,3 +180,4 @@ if __name__ == '__main__':
     register_window = RegisterWindow()
     main_window.show()
     app.exec_()
+
