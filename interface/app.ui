@@ -102,9 +102,9 @@ background-color:rgba(255, 107,107,255);
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>110</y>
-       <width>431</width>
+       <x>140</x>
+       <y>140</y>
+       <width>571</width>
        <height>31</height>
       </rect>
      </property>
@@ -121,7 +121,7 @@ background-color:rgba(255, 107,107,255);
       <string notr="true">font: 87 15pt &quot;Arial Black&quot;;color:white;</string>
      </property>
      <property name="text">
-      <string>Link from facebook you want to scrape!</string>
+      <string>Please enter the facebook link you want to scrape!</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEdit">
@@ -555,8 +555,8 @@ background-color:rgba(255, 107,107,255);
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>810</width>
-        <height>149</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <attribute name="label">
@@ -700,8 +700,8 @@ background-color:rgba(255, 107,107,255);
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>810</width>
-        <height>149</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <attribute name="label">
@@ -887,8 +887,8 @@ background-color:rgba(255, 107,107,255);
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>810</width>
-        <height>149</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <attribute name="label">
@@ -1016,8 +1016,8 @@ background-color:rgba(255, 107,107,255);
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>810</width>
-        <height>149</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <attribute name="label">
@@ -1293,8 +1293,8 @@ background-color:rgba(255, 107,107,255);
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>810</width>
-        <height>149</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <attribute name="label">
