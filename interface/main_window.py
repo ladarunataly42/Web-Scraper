@@ -180,9 +180,3 @@ if __name__ == '__main__':
     register_window = RegisterWindow()
     main_window.show()
     app.exec_()
-
-# https://www.facebook.com/Denisse.Ladaru
-# https://www.facebook.com/LadaruNataly
-# https://www.facebook.com/bogdanspike.adrian
-# https://www.facebook.com/natalyladaruflorentina
-# https://www.facebook.com/cristi93
