@@ -4,7 +4,7 @@
 Scrape Facebook people.
 
 ![plot](./pictures/login.jpg)   ![plot](./pictures/register.jpg)
-![plot](./pictures/scraper.jpg)
+![plot](./pictures/scraperv2.jpg)
 ![plot](./pictures/show_data.jpg)
 
 
