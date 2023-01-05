@@ -113,9 +113,14 @@ class Application(QDialog, Ui_DialogAPP):
             self.label_2.setText("Please insert a link")
             self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         else:
-            PersonScraped().take_data(self.lineEdit.text())
-            self.label_2.setText("Scraped")
-            self.label_2.setAlignment(QtCore.Qt.AlignCenter)
+            var = PersonScraped().find_url(url=self.lineEdit.text())
+            if var is True:
+                self.label_2.setText("This person exists in DB")
+            else:
+                PersonScraped().take_data(self.lineEdit.text())
+
+                self.label_2.setText("Scraped")
+                self.label_2.setAlignment(QtCore.Qt.AlignCenter)
 
     def search_db(self):
         if len(self.lineEdit_2.text()) == 0:
@@ -166,7 +171,19 @@ class Application(QDialog, Ui_DialogAPP):
                             events = "No life events to show"
                         else:
                             events = '\n'.join(key + " - " + value for key, value in v.items())
-                        self.textBrowser.setText(events)
+                        self.label_life_events.setText(events)
+                    #
+                    elif k == 'posts':
+                        lst = ''
+                        nr_post = 1
+                        for i in person[k]:
+                            lst += " \n -------------" + str(nr_post) + "------------- \n"
+                            nr_post += 1
+                            for x, y in i.items():
+                                st = x + ":" + str(y) + '\n'
+                                lst += st
+
+                        self.label_posts.setText(lst)
 
             except Exception as e:
                 print(e)
@@ -181,8 +198,3 @@ if __name__ == '__main__':
     main_window.show()
     app.exec_()
 
-# https://www.facebook.com/Denisse.Ladaru
-# https://www.facebook.com/LadaruNataly
-# https://www.facebook.com/bogdanspike.adrian
-# https://www.facebook.com/natalyladaruflorentina
-# https://www.facebook.com/cristi93

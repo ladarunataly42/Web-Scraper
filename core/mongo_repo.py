@@ -47,6 +47,13 @@ class MongoRepository:
         except Exception as e:
             raise e
 
+    def find_url(self, url):
+        try:
+            var = self.collection.objects.get(url_fb=url).__dict__
+            return True
+        except Exception as e:
+            return False
+
     def insert_people(self, person):
         try:
             obj = self.collection()

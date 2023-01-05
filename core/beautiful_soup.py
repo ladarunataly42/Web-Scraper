@@ -1,5 +1,8 @@
+import os
+
 import requests
 from bs4 import BeautifulSoup
+from facebook_scraper import get_posts, get_profile
 from lxml import etree
 from core.web_driver import WebDriver
 import re
@@ -102,7 +105,7 @@ class BeautifulSoupScrape:
                     basic_name += i
 
             self.person['name'] = basic_name
-            #
+
             # No. of friends
             friends = self.soup.find('a', {
                 'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r '
@@ -113,6 +116,19 @@ class BeautifulSoupScrape:
             elif friends is None:
                 self.person['friends'] = "Private"
 
+            posts = []
+            id = self.person['url_fb'].split("/")[-1]
+            nr_post = 0
+            try:
+                while nr_post < 5:
+                    for post in get_posts(id, credentials=(os.environ['user'], os.environ['pass'])):
+                        posts.append({'post_id': post['post_id'], 'post_text': post['post_text'], 'time': post['time'],
+                                      'image': post['image'], 'likes': post['likes'], 'comments': post['comments'],
+                                      'shares': post['shares'], 'post_url': post['post_url']})
+                        nr_post += 1
+            except:
+                posts = "No posts found"
+            self.person['posts'] = posts
             return self.person
         except Exception as e:
             print("Can't scrape the person --> ", str(e))

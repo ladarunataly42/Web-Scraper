@@ -1,3 +1,5 @@
+import os
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from core.beautiful_soup import BeautifulSoupScrape
@@ -5,6 +7,7 @@ from core.models.people import People
 from core.models.user import Users
 from core.mongo_repo import MongoRepository
 from core.web_driver import WebDriver
+from facebook_scraper import get_posts
 
 
 class UserService:
@@ -61,4 +64,5 @@ class PersonScraped:
         except:
             return False
 
-
+    def find_url(self, url):
+        return self.repo.find_url(url)
